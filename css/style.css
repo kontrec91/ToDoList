@@ -31,6 +31,10 @@ li {
 }
 
 .input-goal {
+    padding: 16px 16px 16px 60px;
+    border: none;
+    /* background: rgba(0, 0, 0, 0.003); */
+    /* box-shadow: inset 0 -2px 1px rgb(0 0 0 / 3%); */
     width: 100%;
 }
 
@@ -45,8 +49,19 @@ li {
 .list-item {
 
 }
+
 .list-item-done {
     text-decoration: line-through;
+    text-decoration-color: rgb(33, 175, 33);
+    text-decoration-thickness: 2px;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 .item-checkbox {
@@ -81,3 +96,5 @@ li {
 .clear-completed-button {
 
 }
+
+
