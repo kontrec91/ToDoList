@@ -1,213 +1,165 @@
 let input = document.querySelector(".input-goal");
 let list = document.querySelector("ul");
-let dotoApp = document.querySelector('.dotoApp');
-let countItems = document.querySelector('.number-items-left');
-let allButton = document.querySelector('.all-button');
-let activeButton = document.querySelector('.active-button');
-let completedButton = document.querySelector('.completed-button');
-let clearCompletedButton = document.querySelector('.clear-completed-button');
+let dotoApp = document.querySelector(".dotoApp");
+// let label = document.querySelector("input.input-goal > label");
+
+let allComplete = document.querySelector("i");
+let countItems = document.querySelector(".number-items-left");
+let footer = document.querySelector(".footer");
+
+
+let text = document.createElement("input");
 
 let dataArray = [];
 
-function setArray(array=null, element = null) {
-  if(element == null && array !== null) {
-    dataArray=array;
-    showElements();
-    showCountItems();
-  }
-    // dataArray=array;
-    showElements(array);
-    showCountItems(array);
-};
+let filter = "All";
 
-function showCountItems(array = null){
-  if(array){
-    dataArray=array;
-  }
-      countItems.innerText = dataArray.length +' items left';
+let isAllCompleted;
+
+function setArray(array) {
+  dataArray = array;
+  showElements();
+  isAllCompleted = dataArray.every((item)=>item.isChecked)
+}
+
+function showCountItems() {
+  let arr = dataArray.filter((item) => item.isChecked !== true);
+  countItems.innerText = arr.length + " items left";
 }
 
 list.addEventListener("click", (event) => {
   if (event.target.className === "item-checkbox") {
-      isChecked(event); 
+    setIsChecked(event);
+    showCountItems();
   }
 });
 
-function isChecked(event) {
+function setIsChecked(event) {
   let elem = dataArray.find((item) => item.id == event.target.parentElement.id);
-  elem.checked = event.target.checked;
-  console.log(event, dataArray);
-  event.target.checked
-    ? event.target.parentElement.children[1].classList.add("list-item-done")
-    : event.target.parentElement.children[1].classList.remove("list-item-done");
+  elem.isChecked = event.target.checked;
+  showElements();
 }
 
 // render
-function showElements(array=null) {
-  console.log('array: ', array);
-    list.innerHTML ='';
-    if(array){
-      dataArray=array;
-    }
-    dataArray.forEach((element) => {
-    let li = document.createElement('li');
-    let checkBox = document.createElement('input');
-    let deleteItem = document.createElement('span');
-    let label = document.createElement('label');
+function showElements() {
+  list.innerHTML = "";
 
-    if(element.checked == true){
-      label.setAttribute("class", "list-item-done")
+  filteredArray().forEach((element) => {
+    let li = document.createElement("li");
+    let checkBox = document.createElement("input");
+    let deleteItem = document.createElement("span");
+    let label = document.createElement("label");
+
+    if (element.isChecked == true) {
+      checkBox.setAttribute("checked", "true");
+      label.setAttribute("class", "list-item-label-done");
+      li.classList.add("list-item-li-done");
     }
 
-    checkBox.type = 'checkbox';
+    checkBox.type = "checkbox";
     checkBox.setAttribute("class", "item-checkbox");
-    li.setAttribute("class", 'item-text');
+    li.classList.add("item-text");
+
     li.setAttribute("id", element.id);
 
     label.innerText = element.value;
+    label.classList.add("text-li");
 
-    deleteItem.innerText = 'X';
-    deleteItem.setAttribute('class', 'delete');
+    deleteItem.innerText = "×";
+    deleteItem.setAttribute("class", "delete");
 
     li.appendChild(label);
-    li.insertAdjacentElement('afterbegin', checkBox);
-    li.insertAdjacentElement('beforeend', deleteItem);
+    li.insertAdjacentElement("afterbegin", checkBox);
+    li.insertAdjacentElement("beforeend", deleteItem);
 
     list.appendChild(li);
   });
-};
+
+  showCountItems();
+
+  if (dataArray.length) {
+    footer.classList.remove("hidden");
+    allComplete.classList.remove("hidden");
+  } else {
+    footer.classList.add("hidden");
+    allComplete.classList.add("hidden");
+  }
+}
 
 input.addEventListener("keypress", (e) => {
   if (e.keyCode === 13 && e.target.value.trim() !== "") {
-
-   setArray([...dataArray, {
-      checked: false,
-      value: e.target.value,
-      id: Date.now()
-    }]);
-
-    console.log(dataArray);
+    setArray([
+      ...dataArray,
+      {
+        isChecked: false,
+        value: e.target.value,
+        id: Date.now(),
+      },
+    ]);
 
     e.target.value = "";
   }
 });
 
 list.addEventListener("click", (event) => {
-    if (event.target.className === "delete") {
-        const arr = dataArray.filter(item => item.id != event.target.parentElement.id);
-        console.log(arr)
-        setArray(arr)
-    }
-  });
-
-
-  activeButton.addEventListener('click', (event) => {
-    activeTasks(event.target);
-  });
-
-  function activeTasks(element) {
-      let array = dataArray.filter((item) => item.checked == false);
-      setArray(array, element);
+  if (event.target.className === "delete") {
+    const arr = dataArray.filter(
+      (item) => item.id != event.target.parentElement.id
+    );
+    setArray(arr);
   }
-
-  allButton.addEventListener('click', (event) => {
-    allTascks(event.target);
-  })
-
-  function allTascks(element) {
-    setArray(array = null, element);
-  }
-// dotoApp.addEventListener("click", (event) => {
-//     if(event.target.className === "delete") {
-
-//     }
-// });
-
-// function onHandleEvent(event) {
-//   if (event.target.className === "delete") {
-//       showElements(dataArray);
-//     dataArray.splice(event.target.parentElement.id, 1);
-
-
-//   } 
-//   else if (event.target.className === "item-checkbox") {
-//     dataArray[event.target.parentElement.id].checked = event.target.checked
-//       ? true
-//       : false;
-//     event.target.checked
-//       ? event.target.parentElement.classList.add("list-item-done")
-//       : event.target.parentElement.classList.remove("list-item-done");
-
-//   } 
-//   else if (event.target.className === "item-text") {
-//     console.log(event);
-//     console.log(event.target.textContent);
-
-//     // console.log(dataArray[event.target.parentElement.id].value);
-
-//     let reducting = document.createElement("input");
-
-//     event.target.addEventListener("onclick", (event) => {
-        
-//       event.target.parentElement.appendChild(reducting);
-//     //   event.target.parentElement.removeChild(event.target);
-
-//     //   reducting.addEventListener('onchange', (event) => {
-//     //     reducting.value = event.target.value; 
-//     //     dataArray[event.target.id].value = event.target.value; 
-//     //   })
-//     });
-//     // event.target.removeChild(reducting);
-
-//     event.target.parentElement.removeChild(reducting);
-//     // event.target.parentElement.appendChild(event.target);
-
-//     showElements(dataArray);
-//   }
-// }
-// function changeValue(index){
-//     console.log(index);
-// }
-
-// list.addEventListener("click", (event) => {
-//   console.log(event.target.className);
-//   onHandleEvent(event);
-//   event.target.className === "item-text"? changeText(event) : null;
-// });
-
-
-
-
-list.addEventListener("dbclick", (event) => {
-    console.log(event.target.className);
-    changeText(event);
 });
 
-function changeText(event) {
-    console.log(event);
-    console.log(event.target.textContent);
+footer.addEventListener("click", (event) => {
+  filter = event.target.className;
+  showElements();
+});
 
-    // console.log(dataArray[event.target.parentElement.id].value);
+const filteredArray = () => {
+  switch (filter) {
+    case "active-button":
+      return dataArray.filter((item) => item.isChecked == false);
+    case "completed-button":
+      return dataArray.filter((item) => item.isChecked == true);
+    case "clear-completed-button":
+      return (dataArray = dataArray.filter((item) => item.isChecked == false));
+    default:
+      return dataArray;
+  }
+};
 
-    let reducting = document.createElement("input");
-        
-    event.target.parentElement.appendChild(reducting);
-    reducting.classList.add('visible');
-    event.target.classList.add('hidden');
+allComplete.addEventListener("click", (event) => {
+  if(isAllCompleted){
+    setArray(dataArray.map((item) => {return {...item, isChecked: false}}));
+    allComplete.classList.remove("checked");
+  }else{
+    setArray(dataArray.map((item) => {return {...item, isChecked: true}}));
+    allComplete.classList.add("checked");
+  }
+});
+
+list.addEventListener("dblclick", (event) => {
+  if (event.target.className === "text-li") {
+    text.setAttribute("class", "set-value-li");
+    text.value = event.target.textContent;
+    let parent = event.target.parentElement;
+    parent.innerHTML = "";
+    parent.appendChild(text);
+  }
+});
+
+text.addEventListener("onchange", () => {
+  dataArray.forEach((item) => {
+    if (item.id == parent.id && item.value.trim() !== "") {
+      item.value = text.value;
+    }
+  });
+});
+
+list.addEventListener("onclick", (event) => {
+  if (event.target !== text) {
+    showElements();
+  }
+});
 
 
-    //   event.target.parentElement.removeChild(event.target);
-
-    //   reducting.addEventListener('onchange', (event) => {
-    //     reducting.value = event.target.value; 
-    //     dataArray[event.target.id].value = event.target.value; 
-    //   })
-    // event.target.removeChild(reducting);
-
-    reducting.classList.remove('visible');
-    event.target.classList.add('visible');
-
-    // event.target.parentElement.appendChild(event.target);
-
-    showElements(dataArray);
-}

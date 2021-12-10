@@ -10,6 +10,8 @@ li {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    font-size: 20px;
+
 }
 
 .dotoApp {
@@ -21,80 +23,138 @@ li {
     max-width: 400px;
 }
 
-.header {
-
-}
+.header {}
 
 .header h1 {
     display: flex;
     justify-content: center;
+    width: 100%;
+    font-size: 100px;
+    font-weight: 100;
+    text-align: center;
+    color: rgba(175, 47, 47, 0.15);
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+    margin: 0;
 }
 
 .input-goal {
-    padding: 16px 16px 16px 60px;
+    padding: 16px;
     border: none;
     /* background: rgba(0, 0, 0, 0.003); */
     /* box-shadow: inset 0 -2px 1px rgb(0 0 0 / 3%); */
     width: 100%;
-}
-
-.main {
+    font-size: 20px;
 
 }
 
-.todoList {
+/* .input-goal:before {
+    content: '❯';
+    font-size: 22px;
+    color: #e6e6e6;
+    padding: 10px 27px 10px 27px;
+} */
 
+
+.header-task {
+    display: flex;
+    align-items: center;
 }
 
-.list-item {
-
+.allComplete {
+    font-size: 22px;
+    color: #777;
+    cursor: pointer;
 }
 
-.list-item-done {
+.checked {
+    color: black !important;
+}
+
+.main {}
+
+.todoList {}
+
+.list-item {}
+
+.list-item-li-done {
+    opacity: 0.5;
+}
+
+.list-item-label-done {
     text-decoration: line-through;
     text-decoration-color: rgb(33, 175, 33);
     text-decoration-thickness: 2px;
 }
 
+.text-li{
+
+}
+
 .visible {
     visibility: visible;
+    /* display: none; */
 }
 
 .hidden {
     visibility: hidden;
+    /* display: flex; */
+}
+
+.set-value-li{
+
 }
 
 .item-checkbox {
-
+    cursor: pointer;
 }
 
 .delete {
-    
+    color: red;
+    transform: scale(1.5);
+    cursor: pointer;
+ 
 }
 
-.footer{
+.footer {
     display: flex;
     align-items: center;
+    color: #777;
+    padding: 10px 15px;
+    height: 20px;
+    text-align: center;
+    border-top: 1px solid #e6e6e6;
 }
 
-.number-items-left{
-
+.number-items-left {
+    /* ￼ float: left;
+    ￼ text-align: left; */
 }
 
-.all-button {
-
+button {
+    border: none;
+    background-color: inherit;
+    color: #777;
+    cursor: pointer;
 }
 
-.active-button {
-
+button:hover {
+    border: 0.5px solid;
+    background-color: rgb(228, 224, 224);
+    border-radius: 5px;
+    color: inherit;
 }
 
-.completed-button {
-
+.active {
+    border: 0.5px solid;
+    border-radius: 5px;
 }
 
-.clear-completed-button {
+.all-button {}
 
-}
+.active-button {}
 
+.completed-button {}
 
+.clear-completed-button {}
